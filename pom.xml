@@ -7,7 +7,7 @@
   <groupId>ms.kenchen</groupId>
   <artifactId>calculator</artifactId>
   <version>1.0</version>
-  <packaging>jar</packaging>
+  <packaging>war</packaging>
 
   <parent>
     <groupId>org.springframework.boot</groupId>
@@ -21,10 +21,17 @@
   </properties>
 
   <dependencies>
-    <!-- Spring Boot Web Starter（包含嵌入式 Tomcat） -->
+    <!-- Spring Boot Web Starter（不再嵌入 Tomcat） -->
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-web</artifactId>
+    </dependency>
+
+    <!-- Tomcat 由 Azure 提供，使用 provided 范围 -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-tomcat</artifactId>
+      <scope>provided</scope>
     </dependency>
 
     <!-- Jersey REST 支持 -->
@@ -44,7 +51,7 @@
       <version>2.22.2</version>
     </dependency>
 
-    <!-- 可选：Spring Boot 测试依赖 -->
+    <!-- 测试依赖 -->
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
@@ -64,17 +71,14 @@
         </configuration>
       </plugin>
 
-      <!-- Spring Boot Maven 插件：负责打包为可执行 JAR -->
+      <!-- Maven WAR 插件（可选） -->
       <plugin>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-maven-plugin</artifactId>
-        <executions>
-          <execution>
-            <goals>
-              <goal>repackage</goal>
-            </goals>
-          </execution>
-        </executions>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-war-plugin</artifactId>
+        <version>3.3.0</version>
+        <configuration>
+          <failOnMissingWebXml>false</failOnMissingWebXml>
+        </configuration>
       </plugin>
     </plugins>
   </build>
