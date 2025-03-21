@@ -7,7 +7,7 @@
   <groupId>ms.kenchen</groupId>
   <artifactId>calculator</artifactId>
   <version>1.0</version>
-  <packaging>war</packaging>
+  <packaging>jar</packaging>
 
   <parent>
     <groupId>org.springframework.boot</groupId>
@@ -21,20 +21,13 @@
   </properties>
 
   <dependencies>
-    <!-- Spring Boot Web Starter -->
+    <!-- Spring Boot Web Starter（包含嵌入式 Tomcat） -->
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-web</artifactId>
     </dependency>
 
-    <!-- Tomcat provided by Azure, do not include it in the WAR -->
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-tomcat</artifactId>
-      <scope>provided</scope>
-    </dependency>
-
-    <!-- Jersey REST -->
+    <!-- Jersey REST 支持 -->
     <dependency>
       <groupId>org.glassfish.jersey.containers</groupId>
       <artifactId>jersey-container-servlet-core</artifactId>
@@ -50,11 +43,18 @@
       <artifactId>jersey-server</artifactId>
       <version>2.22.2</version>
     </dependency>
+
+    <!-- 可选：Spring Boot 测试依赖 -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-test</artifactId>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 
   <build>
     <plugins>
-      <!-- 编译插件 -->
+      <!-- Java 编译插件 -->
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
         <version>3.10.1</version>
@@ -64,20 +64,17 @@
         </configuration>
       </plugin>
 
-      <!-- Spring Boot 插件：repackage WAR -->
+      <!-- Spring Boot Maven 插件：负责打包为可执行 JAR -->
       <plugin>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
-      </plugin>
-
-      <!-- Maven WAR 插件 -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-war-plugin</artifactId>
-        <version>3.3.0</version>
-        <configuration>
-          <failOnMissingWebXml>false</failOnMissingWebXml>
-        </configuration>
+        <executions>
+          <execution>
+            <goals>
+              <goal>repackage</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>
