@@ -21,26 +21,20 @@
   </properties>
 
   <dependencies>
-    <!-- Spring Boot Web with excluded embedded Tomcat -->
+    <!-- Spring Boot Web Starter -->
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-web</artifactId>
-      <exclusions>
-        <exclusion>
-          <groupId>org.springframework.boot</groupId>
-          <artifactId>spring-boot-starter-tomcat</artifactId>
-        </exclusion>
-      </exclusions>
     </dependency>
 
-    <!-- Provided scope for external Tomcat -->
+    <!-- Tomcat provided by Azure, do not include it in the WAR -->
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-tomcat</artifactId>
       <scope>provided</scope>
     </dependency>
 
-    <!-- Jersey -->
+    <!-- Jersey REST -->
     <dependency>
       <groupId>org.glassfish.jersey.containers</groupId>
       <artifactId>jersey-container-servlet-core</artifactId>
@@ -60,7 +54,7 @@
 
   <build>
     <plugins>
-      <!-- Maven Compiler Plugin -->
+      <!-- 编译插件 -->
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
         <version>3.10.1</version>
@@ -70,23 +64,19 @@
         </configuration>
       </plugin>
 
-      <!-- WAR Plugin -->
+      <!-- Spring Boot 插件：repackage WAR -->
+      <plugin>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-maven-plugin</artifactId>
+      </plugin>
+
+      <!-- Maven WAR 插件 -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-war-plugin</artifactId>
         <version>3.3.0</version>
         <configuration>
           <failOnMissingWebXml>false</failOnMissingWebXml>
-        </configuration>
-      </plugin>
-
-      <!-- Spring Boot Plugin -->
-      <plugin>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-maven-plugin</artifactId>
-        <configuration>
-          <mainClass>ms.kenchen.CalculatorApplication</mainClass>
-          <layout>WAR</layout>
         </configuration>
       </plugin>
     </plugins>
